@@ -104,9 +104,17 @@ button:focus-visible{outline:3px solid var(--ball);outline-offset:3px}
 .vs .team small{display:block;font-weight:600;font-size:.6em;color:var(--mute);letter-spacing:.14em;text-transform:uppercase}
 .vs .x{font-family:var(--f-display);color:var(--coral);font-size:clamp(14px,5cqh,30px)}
 .help{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2cqh 4cqw;text-align:left;max-width:86cqw}
+.help > div{min-width:0}
 .help h3{margin:0 0 .8cqh;font-size:clamp(12px,3.2cqh,19px);letter-spacing:.16em;text-transform:uppercase;color:var(--ball)}
 .help dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.7cqh 1.2cqw;font-size:clamp(11px,2.8cqh,16px);line-height:1.25}
-.help dt{font-weight:800;color:var(--ice);white-space:nowrap}
+.help dt{font-weight:800;color:var(--ice)}
+.help dd{min-width:0}
+body.touch .help .keys, body:not(.touch) .help .touchkeys{display:none}
+@container (max-width:620px){
+  .help{grid-template-columns:1fr;gap:2.4cqh;max-width:100%}
+  .help dl{grid-template-columns:1fr;gap:.2em}
+  .help dd{margin-bottom:.7em}
+}
 .help dd{margin:0;color:var(--mute)}
 .help p{margin:0 0 .7cqh;font-size:clamp(11px,2.8cqh,16px);line-height:1.3;color:var(--mute)}
 .help p b{color:var(--ice)}
@@ -197,14 +205,20 @@ kbd{font:700 .9em var(--f-ui);padding:.05em .4em;border-radius:5px;border:1px so
     <div class="help">
       <div>
         <h3>Controls</h3>
-        <dl>
+        <dl class="touchkeys">
+          <dt>Stick (left)</dt><dd>Move Lee, and aim at contact</dd>
+          <dt>SHOT button</dt><dd>Drive, volley, or smash a high ball. Also serves</dd>
+          <dt>LOB button</dt><dd>Lob, or a bandeja on a high ball</dd>
+          <dt>II (top right)</dt><dd>Pause</dd>
+        </dl>
+        <dl class="keys">
           <dt><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> / WASD</dt><dd>Move Lee, and aim at contact</dd>
           <dt><kbd>J</kbd> or <kbd>Space</kbd></dt><dd>Drive, volley, or smash a high ball</dd>
           <dt><kbd>K</kbd> or <kbd>Shift</kbd></dt><dd>Lob, or a bandeja on a high ball</dd>
           <dt><kbd>P</kbd> / <kbd>Esc</kbd></dt><dd>Pause</dd>
         </dl>
-        <p style="margin-top:1.4cqh"><b>Press early.</b> Lee winds up and swings when the ball arrives. The longer the wind-up (up to a second), the harder the hit.</p>
-        <p><b>Aim:</b> hold left or right at contact to pick a side. Up hits deep, down plays it short.</p>
+        <p style="margin-top:1.4cqh"><b>Press early.</b> Tap before the ball reaches Lee. He winds up and swings when it arrives. The longer the wind-up (up to a second), the harder the hit.</p>
+        <p><b>Aim:</b> hold left or right (on the keys or the stick) at contact to pick a side. Up hits deep, down plays it short.</p>
       </div>
       <div>
         <h3>Padel in brief</h3>
@@ -676,7 +690,7 @@ window.addEventListener('blur', ()=>{ for (const k in keys) keys[k]=0; if (scree
 const coarse = (()=>{ try { return matchMedia('(pointer: coarse)').matches; } catch(e){ return false; } })();
 let touchSeen = coarse;
 window.addEventListener('touchstart', ()=>{ if(!touchSeen){ touchSeen=true; updateTouch(); } }, {passive:true});
-function updateTouch(){ $('#touch').hidden = !(touchSeen && screen==='game'); }
+function updateTouch(){ document.body.classList.toggle('touch', touchSeen); $('#touch').hidden = !(touchSeen && screen==='game'); }
 (() => {
   const jz=$('#joy'), kn=$('#knob'); let id=null;
   const upd = e => { const r=jz.getBoundingClientRect(); let dx=(e.clientX-(r.left+r.width/2))/(r.width/2), dy=(e.clientY-(r.top+r.height/2))/(r.height/2); const m=Math.hypot(dx,dy); if (m>1){dx/=m;dy/=m;} joy.x=dx; joy.y=-dy; kn.style.transform=`translate(${dx*36}px,${dy*36}px)`; };
