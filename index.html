@@ -546,7 +546,6 @@ function doHit(p,kind,power,aim,q){
   assignT=0; p.swing=SW; p.swingHigh=high; p.prep=0;
   stats && (stats.rally++);
   sfx.hit(type==='smash'?1:power);
-  burst(P.x,P.y,P.z, type==='smash'?16:8, type==='smash'?'#ff4d6d':'#e6ff3b');
 }
 function doServe(p,aim){
   const sy=p.team===0?-1:1, dir=-sy, box=serveInfo.box;
