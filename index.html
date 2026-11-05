@@ -152,7 +152,7 @@ kbd{font:700 .9em var(--f-ui);padding:.05em .4em;border-radius:5px;border:1px so
     </div>
     <div class="row">
       <button class="chip" id="tgGolden" aria-pressed="true">Golden point</button>
-      <button class="chip" id="tgAssist" aria-pressed="true">Auto-run</button>
+      <button class="chip" id="tgAssist" aria-pressed="false">Auto-run</button>
       <button class="chip" id="tgSound" aria-pressed="true">Sound</button>
     </div>
     <p class="best" id="bestLine"></p>
@@ -306,7 +306,8 @@ const TOUR = [
 const DEMO_VENUE = {venue:'',sky:['#050a1c','#101f4a','#24407e']};
 
 /* ---------- settings ---------- */
-const settings = Object.assign({golden:true, assist:true, sound:true, len:2, diff:1, partner:'ed'}, store.get('llp-settings', {}));
+const settings = Object.assign({golden:true, assist:false, sound:true, len:2, diff:1, partner:'ed'}, store.get('llp-settings', {}));
+if (settings.v!==2){ settings.assist=false; settings.v=2; }
 const saveSettings = () => store.set('llp-settings', settings);
 
 /* ---------- audio ---------- */
